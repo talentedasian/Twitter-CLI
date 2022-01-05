@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
+
+	"twitter/creds"
 )
 
 var (
@@ -31,7 +34,9 @@ func (uReq TweetURLReq) URI() (string, error) {
 	if &uReq == nil {
 		return "", errors.New(NULL_URL_REQ)
 	}
-	return fmt.Sprintf("https://api.twitter.com/2/tweets/search?query=%s", uReq.keyword), nil
+	uri := fmt.Sprintf("https://api.twitter.com/2/tweets/search/recent?query=%s", uReq.keyword)
+	url := strings.Replace(uri, " ", "%20", 99)
+	return url, nil
 }
 
 func (h TweetHandler) handle() (string, error) {
@@ -44,8 +49,7 @@ func (h TweetHandler) handle() (string, error) {
 	if reqErr != nil {
 		return "", reqErr
 	}
-
-	client := &http.Client{}
+	req.Header.Add("Authorization", "Bearer "+creds.Token())
 
 	res, resErr := client.Do(req)
 	if resErr != nil {
