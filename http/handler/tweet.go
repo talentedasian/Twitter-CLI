@@ -25,7 +25,8 @@ type TweetURLReq struct {
 }
 
 type TweetHandler struct {
-	Req URLReq
+	Req    URLReq
+	Client client.Client
 }
 
 func (uReq TweetURLReq) URI() (string, error) {
@@ -41,7 +42,7 @@ func buildUri(u TweetURLReq) string {
 	return url
 }
 
-func (h TweetHandler) Handle(cl client.Client) (string, error) {
+func (h TweetHandler) Handle() (string, error) {
 	uri, err := h.Req.URI()
 	if err != nil {
 		return "", errors.New("There was a problem parsing the URL to request to.")
@@ -53,7 +54,7 @@ func (h TweetHandler) Handle(cl client.Client) (string, error) {
 	}
 	req.Header.Add("Authorization", "Bearer "+creds.Token())
 
-	res, resErr := cl.Do(req)
+	res, resErr := h.Client.Do(req)
 	if resErr != nil {
 		return "", resErr
 	}

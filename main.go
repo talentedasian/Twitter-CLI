@@ -15,9 +15,9 @@ func main() {
 
 	kwrd := "Test Driven Development"
 	netClient := client.Default()
-	hdl := handler.TweetHandler{handler.TweetURLReq{Keyword: kwrd}}
+	hdl := handler.TweetHandler{handler.TweetURLReq{Keyword: kwrd}, netClient}
 
-	res, _ := http.ReqTweets(hdl, netClient)
+	res, _ := http.ReqTweets(hdl)
 	x, _, _ := terminal.GetSize(0)
 	fmt.Println("============================================================")
 	for _, v := range res.Tweets {

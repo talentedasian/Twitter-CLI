@@ -14,8 +14,8 @@ func TestResponseOnTwitterAPI(t *testing.T) {
 
 	gmg := gomega.NewGomegaWithT(t)
 
-	handler := TweetHandler{TweetURLReq{"Test driven development"}}
-	res, err := handler.handle(client.Default())
+	handler := TweetHandler{TweetURLReq{"Test driven development"}, client.Default()}
+	res, err := handler.Handle()
 
 	gmg.Ω(err).ShouldNot(gomega.HaveOccurred())
 	fmt.Println(res)
@@ -24,8 +24,8 @@ func TestResponseOnTwitterAPI(t *testing.T) {
 func TestRetErrIfHandlerNotRecieve200(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
-	handler := TweetHandler{TweetURLReq{""}}
-	_, err := handler.handle(stubClient{status: 404})
+	handler := TweetHandler{TweetURLReq{""}, stubClient{status: 300}}
+	_, err := handler.Handle()
 
 	gmg.Ω(err).Should(gomega.HaveOccurred())
 }
@@ -33,8 +33,8 @@ func TestRetErrIfHandlerNotRecieve200(t *testing.T) {
 func TestResReturnsNotFoundStatusHandlerReturnsNotFoundString(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
-	handler := TweetHandler{TweetURLReq{""}}
-	res, err := handler.handle(stubClient{status: 404})
+	handler := TweetHandler{TweetURLReq{""}, stubClient{status: 404}}
+	res, err := handler.Handle()
 
 	gmg.Ω(err).Should(gomega.HaveOccurred())
 	gmg.Ω(res).Should(gomega.Equal(not_found))
@@ -43,8 +43,8 @@ func TestResReturnsNotFoundStatusHandlerReturnsNotFoundString(t *testing.T) {
 func TestResReturnsUnAuthorizedStatusHandlerReturnsNotAuthorizedString(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
-	handler := TweetHandler{TweetURLReq{""}}
-	res, err := handler.handle(stubClient{status: 401})
+	handler := TweetHandler{TweetURLReq{""}, stubClient{status: 401}}
+	res, err := handler.Handle()
 
 	gmg.Ω(err).Should(gomega.HaveOccurred())
 	gmg.Ω(res).Should(gomega.Equal(not_authorized))
@@ -53,8 +53,8 @@ func TestResReturnsUnAuthorizedStatusHandlerReturnsNotAuthorizedString(t *testin
 func TestResReturnsForbiddenStatusHandlerReturnsForbiddenString(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
-	handler := TweetHandler{TweetURLReq{""}}
-	res, err := handler.handle(stubClient{status: 403})
+	handler := TweetHandler{TweetURLReq{""}, stubClient{status: 403}}
+	res, err := handler.Handle()
 
 	gmg.Ω(err).Should(gomega.HaveOccurred())
 	gmg.Ω(res).Should(gomega.Equal(forbidden))
@@ -63,10 +63,10 @@ func TestResReturnsForbiddenStatusHandlerReturnsForbiddenString(t *testing.T) {
 func TestResReturn500AsStatusHandlerReturnsWhateverClientReturns(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
-	handler := TweetHandler{TweetURLReq{""}}
 	rsBody := "Internal server problem"
+	handler := TweetHandler{TweetURLReq{""}, stubClient{body: rsBody, status: 500}}
 
-	res, err := handler.handle(stubClient{body: rsBody, status: 500})
+	res, err := handler.Handle()
 
 	gmg.Ω(err).Should(gomega.HaveOccurred())
 	gmg.Ω(res).Should(gomega.Equal(rsBody))

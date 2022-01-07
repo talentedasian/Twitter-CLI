@@ -11,7 +11,7 @@ type StubTweetHandler struct {
 	cnt string
 }
 
-func (h StubTweetHandler) handle() (string, error) {
+func (h StubTweetHandler) Handle() (string, error) {
 	return h.cnt, nil
 }
 

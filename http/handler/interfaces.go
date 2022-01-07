@@ -1,9 +1,7 @@
 package handler
 
-import "twitter/http/client"
-
 type Handler interface {
-	Handle(client client.Client) (string, error)
+	Handle() (string, error)
 }
 
 type URLReq interface {
