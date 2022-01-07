@@ -9,7 +9,7 @@ import (
 	"github.com/onsi/gomega"
 )
 
-// This test isn't really testing anything. It's just there to see if 
+// This test isn't really testing anything. It's just there to see if
 // Twitter's API has changed or not.
 func TestResponseOnTwitterAPI(t *testing.T) {
 	creds.Init("../../creds/auth.json")
@@ -32,7 +32,7 @@ func TestRetErrIfHandlerNotRecieve200(t *testing.T) {
 	gmg.Ω(err).Should(gomega.HaveOccurred())
 }
 
-func TestResReturnsNotFoundStatusHandlerReturnsNotFoundString(t *testing.T) {
+func TestResReturnsNotFoundStatusThenHandlerReturnsNotFoundString(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
 	handler := TweetHandler{TweetURLReq{""}, stubClient{status: 404}}
@@ -42,7 +42,7 @@ func TestResReturnsNotFoundStatusHandlerReturnsNotFoundString(t *testing.T) {
 	gmg.Ω(res).Should(gomega.Equal(not_found))
 }
 
-func TestResReturnsUnAuthorizedStatusHandlerReturnsNotAuthorizedString(t *testing.T) {
+func TestResReturnsUnAuthorizedStatusThenHandlerReturnsNotAuthorizedString(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
 	handler := TweetHandler{TweetURLReq{""}, stubClient{status: 401}}
@@ -52,7 +52,7 @@ func TestResReturnsUnAuthorizedStatusHandlerReturnsNotAuthorizedString(t *testin
 	gmg.Ω(res).Should(gomega.Equal(not_authorized))
 }
 
-func TestResReturnsForbiddenStatusHandlerReturnsForbiddenString(t *testing.T) {
+func TestResReturnsForbiddenStatusThenHandlerReturnsForbiddenString(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
 	handler := TweetHandler{TweetURLReq{""}, stubClient{status: 403}}
@@ -62,7 +62,7 @@ func TestResReturnsForbiddenStatusHandlerReturnsForbiddenString(t *testing.T) {
 	gmg.Ω(res).Should(gomega.Equal(forbidden))
 }
 
-func TestResReturn500AsStatusHandlerReturnsWhateverClientReturns(t *testing.T) {
+func TestResReturn500AsStatusThenHandlerReturnsWhateverClientReturns(t *testing.T) {
 	gmg := gomega.NewGomegaWithT(t)
 
 	rsBody := "Internal server problem"
