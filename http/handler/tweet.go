@@ -13,27 +13,36 @@ import (
 
 var (
 	NULL_URL_REQ string = "URL REQ interface passed cannot be null."
+	baseUri      string = "https://api.twitter.com/2/tweets/search/recent?"
+	baseQuery    string = "query=customQuery %s&%s"
+	types        string = "-is:retweet -is:reply -is:quote"
+	fields              = "tweet.fields=created_at,author_id"
+	query        string = fmt.Sprintf(baseUri+baseQuery, types, fields)
 )
 
 type TweetURLReq struct {
-	keyword string
+	Keyword string
 }
 
 type TweetHandler struct {
-	req URLReq
+	Req URLReq
 }
 
 func (uReq TweetURLReq) URI() (string, error) {
 	if &uReq == nil {
 		return "", errors.New(NULL_URL_REQ)
 	}
-	uri := fmt.Sprintf("https://api.twitter.com/2/tweets/search/recent?query=%s", uReq.keyword)
-	url := strings.Replace(uri, " ", "%20", 99)
-	return url, nil
+	return buildUri(uReq), nil
 }
 
-func (h TweetHandler) handle(cl client.Client) (string, error) {
-	uri, err := h.req.URI()
+func buildUri(u TweetURLReq) string {
+	uri := strings.Replace(query, "customQuery", u.Keyword, 1)
+	url := strings.Replace(uri, " ", "%20", 99)
+	return url
+}
+
+func (h TweetHandler) Handle(cl client.Client) (string, error) {
+	uri, err := h.Req.URI()
 	if err != nil {
 		return "", errors.New("There was a problem parsing the URL to request to.")
 	}
