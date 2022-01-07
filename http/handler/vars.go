@@ -1,7 +1,10 @@
 package handler
 
-import "net/http"
+import "errors"
 
 var (
-	client = &http.Client{}
+	not_found      string = "NOT_FOUND"
+	not_authorized string = "Unauthorized"
+	forbidden      string = "forbidden"
+	not_200        error  = errors.New("Request did not return a 200.")
 )
