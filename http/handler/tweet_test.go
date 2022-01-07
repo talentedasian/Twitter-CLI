@@ -9,6 +9,8 @@ import (
 	"github.com/onsi/gomega"
 )
 
+// This test isn't really testing anything. It's just there to see if 
+// Twitter's API has changed or not.
 func TestResponseOnTwitterAPI(t *testing.T) {
 	creds.Init("../../creds/auth.json")
 
