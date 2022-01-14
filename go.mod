@@ -3,11 +3,17 @@ module twitter
 go 1.17
 
 require (
+	github.com/olekukonko/tablewriter v0.0.5
 	github.com/onsi/gomega v1.17.0
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 )
 
 require (
+	github.com/fatih/color v1.13.0 // indirect
+	github.com/jedib0t/go-pretty/v6 v6.2.4 // indirect
+	github.com/mattn/go-colorable v0.1.9 // indirect
+	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mattn/go-runewidth v0.0.9 // indirect
+	github.com/rodaine/table v1.0.1 // indirect
 	golang.org/x/net v0.0.0-20210428140749-89ef3d95e781 // indirect
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 	golang.org/x/text v0.3.6 // indirect
